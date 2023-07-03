@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Tampilkan Alamat IP</title>
+</head>
+<body>
+  <h1>Tampilkan Alamat IP</h1>
+  <p id="ip">Sedang mencari alamat IP...</p>
+
+  <script>
+    // Menggunakan API pihak ketiga untuk mendapatkan alamat IP
+    fetch('https://api.ipify.org?format=json')
+      .then(response => response.json())
+      .then(data => {
+        var ipAddress = data.ip;
+        document.getElementById("ip").innerHTML = "Alamat IP Anda adalah: " + ipAddress;
+      })
+      .catch(error => {
+        console.log(error);
+        document.getElementById("ip").innerHTML = "Gagal mendapatkan alamat IP.";
+      });
+  </script>
+</body>
+</html>
