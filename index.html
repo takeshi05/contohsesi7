@@ -1,24 +1,86 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Tampilkan Alamat IP</title>
+  <title>Terminal Hacker</title>
+  <style>
+    body {
+      background-color: black;
+      color: lime;
+      font-family: monospace;
+      font-size: 14px;
+      text-align: center;
+      padding: 50px;
+    }
+
+    .terminal {
+      border: 1px solid lime;
+      padding: 20px;
+      height: 400px;
+      overflow: auto;
+    }
+
+    .input-line {
+      display: flex;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .input-prefix {
+      color: #29ff7a;
+      margin-right: 5px;
+    }
+
+    .input-field {
+      flex-grow: 1;
+      background-color: transparent;
+      border: none;
+      outline: none;
+      color: lime;
+    }
+  </style>
 </head>
 <body>
-  <h1>Tampilkan Alamat IP</h1>
-  <p id="ip">Sedang mencari alamat IP...</p>
+  <div class="terminal">
+    <pre>Welcome to Terminal Hacker</pre>
+    <pre>Type 'help' to see the available commands.</pre>
+    <pre id="output"></pre>
+    <div class="input-line">
+      <span class="input-prefix">$</span>
+      <input type="text" id="command-input" class="input-field" autofocus>
+    </div>
+  </div>
 
   <script>
-    // Menggunakan API pihak ketiga untuk mendapatkan alamat IP
-    fetch('https://api.ipify.org?format=json')
-      .then(response => response.json())
-      .then(data => {
-        var ipAddress = data.ip;
-        document.getElementById("ip").innerHTML = "Alamat IP Anda adalah: " + ipAddress;
-      })
-      .catch(error => {
-        console.log(error);
-        document.getElementById("ip").innerHTML = "Gagal mendapatkan alamat IP.";
-      });
+    const outputElement = document.getElementById('output');
+    const commandInput = document.getElementById('command-input');
+    commandInput.addEventListener('keydown', handleCommandInput);
+
+    function handleCommandInput(event) {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        const command = commandInput.value.trim();
+        executeCommand(command);
+        commandInput.value = '';
+      }
+    }
+
+    function executeCommand(command) {
+      const output = document.createElement('pre');
+      output.textContent = '$ ' + command;
+
+      if (command.toLowerCase() === 'help') {
+        output.textContent += '\nAvailable commands:\n- help\n- about\n- contact';
+      } else if (command.toLowerCase() === 'about') {
+        output.textContent += '\nThis is a terminal hacker simulation.';
+      } else if (command.toLowerCase() === 'contact') {
+        output.textContent += '\nContact us at hacker@domain.com';
+      } else {
+        output.textContent += '\nCommand not found. Type "help" to see available commands.';
+      }
+
+      outputElement.appendChild(output);
+      outputElement.scrollTop = outputElement.scrollHeight;
+    }
   </script>
 </body>
 </html>
